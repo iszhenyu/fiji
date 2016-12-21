@@ -1,0 +1,16 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+.DS_Store
+*.pyc
+*.log
+*.egg
+*.db
+*.pid
+*.lock
+test.conf
+/build
+/dist
+/venv
+/tmp
+/node_modules/
+#requirements.txt
