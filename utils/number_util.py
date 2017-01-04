@@ -10,7 +10,19 @@ from decimal import Decimal
 decimal.getcontext().prec = 6
 
 
-def divide(num1, num2, ndigits=2):
+def divide(num1, num2):
     r = Decimal(num1) / Decimal(num2)
-    return round(r, ndigits)
+    return float(r.quantize(Decimal('.01'), decimal.ROUND_UP))
 
+
+def average(*args):
+    """
+    平均值,保存两位小数
+    :param args:
+    :return:
+    """
+    total = Decimal('0')
+    for item in args:
+        total += Decimal(item)
+    ave = total / len(args)
+    return float(ave.quantize(Decimal('.01'), decimal.ROUND_UP))
