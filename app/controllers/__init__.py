@@ -13,6 +13,7 @@ from flask_login import current_user
 from app import factory
 from app.core import json_error
 from app.exceptions import FijiException
+from app.exceptions.base_exceptions import OrmException
 
 
 def check_user_auth():
@@ -27,11 +28,7 @@ def check_user_auth():
 
 def create_app(settings_override=None):
     _app = factory.create_app(__name__, __name__, __path__, settings_override)
-    root = os.path.dirname(os.path.abspath(__file__))
-    end_index = root.find('%scontrollers' % os.sep)
-    _app.root_path = root[:end_index]
-    _app.template_folder = 'static'  # 将模板文件夹定位到static时为了兼容前端需求git st
-    _app.json_encoder = MongoJSONEncoder
+    # _app.json_encoder = MongoJSONEncoder
 
     # 添加检查权限的请求预处理
     for blueprint in _app.blueprints.keys():
@@ -77,7 +74,7 @@ def create_app(settings_override=None):
     @_app.errorhandler(FijiException)
     def custom_error_handler(e):
         if e.level in [FijiException.LEVEL_WARN, FijiException.LEVEL_ERROR]:
-            if isinstance(e, OralOrmError):
+            if isinstance(e, OrmException):
                 _app.logger.exception('%s %s' % (e.parent_error, e))
             else:
                 _app.logger.exception('错误信息: %s %s' % (e.extras, e))

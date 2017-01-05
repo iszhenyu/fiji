@@ -13,3 +13,4 @@ test.conf
 /venv
 /tmp
 /node_modules/
+/config/settings.py

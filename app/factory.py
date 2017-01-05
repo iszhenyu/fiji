@@ -27,6 +27,11 @@ def create_app(app_name, blueprint_package, blueprint_path, settings_override=No
     app.config.from_pyfile('settings.cfg', silent=True)
     app.config.from_object(settings_override)
 
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    app.root_path = root
+    # app.template_folder = 'public'
+    # app.static_folder = 'public'
+
     _configure_logging(app)
     _configure_extensions(app)
     _configure_blueprints(app, blueprint_package, blueprint_path)
@@ -65,8 +70,9 @@ def _configure_logging(flask_instance):
         warn_log = flask_instance.config['LOG_DEV']
     else:
         warn_log = flask_instance.config['LOG_PRODUCTION']
+    print flask_instance.root_path
     if not warn_log.startswith('/'):
-        warn_log = os.path.join(os.path.dirname(os.path.abspath(__file__)), warn_log)
+        warn_log = os.path.join(flask_instance.root_path, warn_log)
     file_handler = TimedRotatingFileHandler(warn_log, when='midnight', interval=1)
     if flask_instance.debug or flask_instance.testing:
         file_handler.setLevel(logging.DEBUG)
