@@ -9,7 +9,7 @@ from flask import jsonify
 from flask_login import current_user
 
 from app import factory
-from app.core import json_error
+from app.core import json_error, CustomJsonEncoder
 from app.exceptions import FijiException, OrmException
 
 
@@ -25,7 +25,7 @@ def check_user_auth():
 
 def create_app(settings_override=None):
     _app = factory.create_app(__name__, __name__, __path__, settings_override)
-    # _app.json_encoder = MongoJSONEncoder
+    _app.json_encoder = CustomJsonEncoder
 
     # 添加检查权限的请求预处理
     for blueprint in _app.blueprints.keys():
