@@ -8,6 +8,7 @@ from datetime import timedelta
 DEBUG = True
 SECRET_KEY = 'super-secret-key'
 
+MAIL_ENABLED = False
 MAIL_SERVER = '10.0.1.101'
 MAIL_DEFAULT_SENDER = 'no-reply@17zuoye.com'
 MAIL_RECEIVER = [

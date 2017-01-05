@@ -3,8 +3,6 @@
 @author: xiaoz
 @time: 2016/12/21 下午4:25
 """
-import os
-
 from flask import abort
 from flask import request
 from flask import jsonify
@@ -12,8 +10,7 @@ from flask_login import current_user
 
 from app import factory
 from app.core import json_error
-from app.exceptions import FijiException
-from app.exceptions.base_exceptions import OrmException
+from app.exceptions import FijiException, OrmException
 
 
 def check_user_auth():

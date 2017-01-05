@@ -10,7 +10,7 @@ from logging.handlers import SMTPHandler, TimedRotatingFileHandler
 from flask import Flask
 
 from app.core import register_blueprints
-from app.extension import login_manager
+from app.extensions import login_manager, db
 
 
 def create_app(app_name, blueprint_package, blueprint_path, settings_override=None):
@@ -40,8 +40,7 @@ def create_app(app_name, blueprint_package, blueprint_path, settings_override=No
 
 
 def _configure_logging(flask_instance):
-    # if flask_instance.debug or flask_instance.testing:
-    #     return
+    mail_enabled = flask_instance.config['MAIL_ENABLED']
     mail_handler = SMTPHandler(flask_instance.config['MAIL_SERVER'],
                                flask_instance.config['MAIL_DEFAULT_SENDER'],
                                flask_instance.config['MAIL_RECEIVER'],
@@ -70,24 +69,26 @@ def _configure_logging(flask_instance):
         warn_log = flask_instance.config['LOG_DEV']
     else:
         warn_log = flask_instance.config['LOG_PRODUCTION']
-    print flask_instance.root_path
     if not warn_log.startswith('/'):
         warn_log = os.path.join(flask_instance.root_path, warn_log)
+
     file_handler = TimedRotatingFileHandler(warn_log, when='midnight', interval=1)
+    file_handler.setFormatter(formatter)
     if flask_instance.debug or flask_instance.testing:
         file_handler.setLevel(logging.DEBUG)
     else:
         file_handler.setLevel(logging.INFO)
-        file_handler.setFormatter(formatter)
 
     loggers = [flask_instance.logger, logging.getLogger('pymongo')]
     for logger in loggers:
         logger.addHandler(file_handler)
-        logger.addHandler(mail_handler)
+        if mail_enabled:
+            logger.addHandler(mail_handler)
 
 
 def _configure_extensions(flask_instance):
     login_manager.init_app(flask_instance)
+    db.init_app(flask_instance)
 
 
 def _configure_blueprints(flask_instance, blueprint_package, blueprint_path):
