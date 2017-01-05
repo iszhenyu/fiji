@@ -8,6 +8,12 @@ from datetime import timedelta
 DEBUG = True
 SECRET_KEY = 'super-secret-key'
 
+SQLALCHEMY_DATABASE_URI = 'mysql://root:3013689@localhost/fiji_new'
+SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+SQLALCHEMY_ECHO = True
+SQLALCHEMY_POOL_SIZE = 30
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+
 MAIL_ENABLED = False
 MAIL_SERVER = '10.0.1.101'
 MAIL_DEFAULT_SENDER = 'no-reply@17zuoye.com'

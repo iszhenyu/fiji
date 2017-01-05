@@ -41,6 +41,12 @@ class IllegalParameterException(FijiException):
         self.level = FijiException.LEVEL_INFO
 
 
+class ValidatorException(FijiException):
+    def __init__(self, message, extras=None):
+        super(ValidatorException, self).__init__(message=message, extras=extras)
+        self.level = FijiException.LEVEL_INFO
+
+
 class FormException(FijiException):
     def __init__(self, form):
         message = form.get_first_validate_error()
