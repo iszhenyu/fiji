@@ -12,14 +12,14 @@ class UserService(Service):
     __model__ = User
 
     def verify_user(self, mobile, password):
-        users = self.find(mobile=mobile)
-        if users and users[0].verify_password(password):
-            return users[0]
+        user = self.first(mobile=mobile)
+        if user and user.verify_password(password):
+            return user
         raise ValidatorException(u'手机号或密码错误')
 
     def register_user(self, mobile, password):
-        user = self.find(mobile=mobile)
+        user = self.first(mobile=mobile)
         if user:
             raise ValidatorException(u'手机号已经注册,请直接登录')
-        user = self.new(mobile=mobile, password=password)
+        user = self.new_instance(mobile=mobile, password=password)
         return self.save(user)

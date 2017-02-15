@@ -32,6 +32,12 @@ class Service(object):
         kwargs.pop('csrf_token', None)
         return kwargs
 
+    def new_instance(self, **kwargs):
+        """
+        返回对应模型的实例,未保存
+        """
+        return self.__model__(**self._preprocess_params(kwargs))
+
     def save(self, model):
         """
         Commits the model to the database and returns the model
