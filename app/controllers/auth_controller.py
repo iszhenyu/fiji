@@ -5,4 +5,12 @@
 """
 from flask import Blueprint
 
+from app.core import json_response
+
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+
+@bp.route('/test')
+@json_response
+def test():
+    return 'test'
