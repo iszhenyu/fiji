@@ -17,7 +17,7 @@ def check_user_auth():
     """检查用户权限"""
     if request.path.startswith('/static') and request.method not in ('GET', 'POST'):
         return None
-    if request.path.startswith('_debug_toolbar') or request.path.startswith('/api/auth'):
+    if request.path.startswith('/api/auth'):
         return None
     if request.path.startswith('/api') and not current_user.is_authenticated:
         abort(401)
