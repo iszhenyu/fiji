@@ -10,7 +10,7 @@ from app.core import json_response
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-@bp.route('/test')
+@bp.route('/login')
 @json_response
 def test():
-    return 'test'
+    return ''
