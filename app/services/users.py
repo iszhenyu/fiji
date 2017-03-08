@@ -3,7 +3,7 @@
 @author: xiaoz
 @time: 2017/1/5 下午3:09
 """
-from app.exceptions import ValidatorException
+from app.errors import ValidatorException
 from app.models.users import User
 from app.services import Service
 

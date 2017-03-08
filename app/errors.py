@@ -5,7 +5,7 @@
 """
 
 
-class FijiException(Exception):
+class FijiError(Exception):
     default_status_code = 200
 
     LEVEL_DEBUG = 0
@@ -18,12 +18,12 @@ class FijiException(Exception):
         self._code = error_code
         self.extras = extras
         self.parent_error = parent_error
-        self.level = FijiException.LEVEL_DEBUG
+        self.level = FijiError.LEVEL_DEBUG
 
     @property
     def error_code(self):
         if not self._code:
-            return FijiException.default_status_code
+            return FijiError.default_status_code
         return self._code
 
     def to_dict(self):
@@ -35,26 +35,26 @@ class FijiException(Exception):
         return rv
 
 
-class IllegalParameterException(FijiException):
+class IllegalParameterError(FijiError):
     def __init__(self, message, extras=None):
-        super(IllegalParameterException, self).__init__(message=message, extras=extras)
-        self.level = FijiException.LEVEL_INFO
+        super(IllegalParameterError, self).__init__(message=message, extras=extras)
+        self.level = FijiError.LEVEL_INFO
 
 
-class ValidatorException(FijiException):
+class ValidatorError(FijiError):
     def __init__(self, message, extras=None):
-        super(ValidatorException, self).__init__(message=message, extras=extras)
-        self.level = FijiException.LEVEL_INFO
+        super(ValidatorError, self).__init__(message=message, extras=extras)
+        self.level = FijiError.LEVEL_INFO
 
 
-class FormException(FijiException):
+class FormError(FijiError):
     def __init__(self, form):
         message = form.get_first_validate_error()
-        super(FormException, self).__init__(message, extras=form.data)
-        self.level = FijiException.LEVEL_INFO
+        super(FormError, self).__init__(message, extras=form.data)
+        self.level = FijiError.LEVEL_INFO
 
 
-class OrmException(FijiException):
+class OrmError(FijiError):
     def __init__(self, message, status_code=None, extras=None, parent_error=None):
-        super(OrmException, self).__init__(message, status_code, extras, parent_error)
-        self.level = FijiException.LEVEL_ERROR
+        super(OrmError, self).__init__(message, status_code, extras, parent_error)
+        self.level = FijiError.LEVEL_ERROR

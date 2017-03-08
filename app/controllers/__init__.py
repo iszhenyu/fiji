@@ -10,7 +10,7 @@ from flask_login import current_user
 
 from app import factory
 from app.core import json_error, CustomJsonEncoder
-from app.exceptions import FijiException, OrmException
+from app.errors import FijiError, OrmError
 
 
 def check_user_auth():
@@ -68,10 +68,10 @@ def create_app(settings_override=None):
         response.status_code = 500
         return response
 
-    @_app.errorhandler(FijiException)
+    @_app.errorhandler(FijiError)
     def custom_error_handler(e):
-        if e.level in [FijiException.LEVEL_WARN, FijiException.LEVEL_ERROR]:
-            if isinstance(e, OrmException):
+        if e.level in [FijiError.LEVEL_WARN, FijiError.LEVEL_ERROR]:
+            if isinstance(e, OrmError):
                 _app.logger.exception('%s %s' % (e.parent_error, e))
             else:
                 _app.logger.exception('错误信息: %s %s' % (e.extras, e))
