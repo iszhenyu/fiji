@@ -13,7 +13,7 @@ from flask import current_app
 from flask import jsonify
 from flask import make_response
 from flask import request
-from flask.ext.login import current_user
+from flask_login import current_user
 from flask.json import dumps, JSONEncoder
 
 

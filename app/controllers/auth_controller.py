@@ -18,5 +18,5 @@ def login():
 
 @bp.route('/logout')
 @json_response
-def login():
+def logout():
     return ''
