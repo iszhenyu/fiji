@@ -17,7 +17,6 @@ def user_loader():
 
 
 login_manager = LoginManager()
-login_manager.session_protection = 'strong'
 login_manager.unauthorized_handler(unauthorized_handler)
 login_manager.user_loader(user_loader)
 
