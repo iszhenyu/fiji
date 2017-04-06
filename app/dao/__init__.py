@@ -43,11 +43,7 @@ class BaseDao(object):
             raise ValueError('%s is not of type %s' % (model, self.__model__))
         return rv
 
-    def _preprocess_params(self, kwargs):
-        """
-        Returns a preprocessed dictionary of parameters. Used by default
-        before creating a new instance or updating an existing instance.
-        """
+    def _pop_csrf_token(self, kwargs):
         kwargs.pop('csrf_token', None)
         return kwargs
 
@@ -55,7 +51,7 @@ class BaseDao(object):
         """
         返回对应模型的实例,未保存
         """
-        return self.__model__(**self._preprocess_params(kwargs))
+        return self.__model__(**self._pop_csrf_token(kwargs))
 
     def save(self, model):
         """
@@ -71,7 +67,7 @@ class BaseDao(object):
         Returns an updated instance of the service's model class.
         """
         self._isinstance(model)
-        for k, v in self._preprocess_params(kwargs).items():
+        for k, v in self._pop_csrf_token(kwargs).items():
             setattr(model, k, v)
         self.save(model)
         return model
@@ -97,12 +93,12 @@ class BaseDao(object):
         """
         return self.__model__.query.all()
 
-    def get_by_id(self, id):
+    def get_by_id(self, model_id):
         """
         Returns an instance of the service's model with the specified id.
         Returns `None` if an instance with the specified id does not exist.
         """
-        return self.__model__.query.get(id)
+        return self.__model__.query.get(model_id)
 
     def list_by_ids(self, *ids):
         """
