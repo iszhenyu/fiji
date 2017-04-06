@@ -9,4 +9,3 @@ from app.models.users import User
 
 class UserDao(BaseDao):
     __model__ = User
-

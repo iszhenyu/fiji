@@ -3,7 +3,11 @@
 @author: xiaoz
 @time: 2017/4/6 上午10:57
 """
+import threading
+
 from app.extensions import db
+
+dao_lock = threading.Lock()
 
 
 class BaseDao(object):
@@ -12,6 +16,21 @@ class BaseDao(object):
     operations in the context of a :class:`Flask` application.
     """
     __model__ = None
+
+    __instance = None
+
+    def __init__(self):
+        pass
+
+    def __new__(cls, *args, **kwargs):
+        if not cls.__instance:
+            try:
+                dao_lock.acquire()
+                if not cls.__instance:
+                    cls.__instance = super(BaseDao, cls).__new__(cls, *args, **kwargs)
+            finally:
+                dao_lock.release()
+        return cls.__instance
 
     def _isinstance(self, model, raise_error=True):
         """
