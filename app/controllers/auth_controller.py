@@ -14,3 +14,9 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @json_response
 def login():
     return ''
+
+
+@bp.route('/logout')
+@json_response
+def login():
+    return ''

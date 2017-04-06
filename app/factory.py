@@ -65,14 +65,11 @@ def _configure_logging(flask_instance):
     )
 
     # 配置log
-    if flask_instance.debug or flask_instance.testing:
-        warn_log = flask_instance.config['LOG_DEV']
-    else:
-        warn_log = flask_instance.config['LOG_PRODUCTION']
-    if not warn_log.startswith('/'):
-        warn_log = os.path.join(flask_instance.root_path, warn_log)
+    log_file = flask_instance.config['LOG_NAME']
+    if not log_file.startswith('/'):
+        log_file = os.path.join(flask_instance.root_path, 'logs%s%s' % (os.sep, log_file))
 
-    file_handler = TimedRotatingFileHandler(warn_log, when='midnight', interval=1)
+    file_handler = TimedRotatingFileHandler(log_file, when='midnight', interval=1)
     file_handler.setFormatter(formatter)
     if flask_instance.debug or flask_instance.testing:
         file_handler.setLevel(logging.DEBUG)

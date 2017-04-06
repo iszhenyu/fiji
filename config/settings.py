@@ -32,9 +32,7 @@ SECURITY_SEND_REGISTER_EMAIL = False
 
 CACHE_TYPE = 'simple'
 
-LOG_DEV = 'logs/dev.log'
-LOG_PRODUCTION = 'logs/production.log'
-
+LOG_NAME = 'fiji.log'
 
 DEFAULT_PER_PAGE = 10
 
